@@ -38,7 +38,7 @@ app.use(passport.session());
 // connect to our database 
 //mongoose.connect('mongodb://localhost/homework3db');
 mongoose.connect(process.env.DB);
-//mongoose.connect('mongodb://admin:admin123@ds215019.mlab.com:15019/homework3webapi');0
+//mongoose.connect('mongodb://admin:admin123@ds215019.mlab.com:15019/homework3webapi');
 //=============================================================================================
 //ROUTES FOR THE API=====================
 
@@ -230,7 +230,9 @@ apiRouter.route('/movies')
 			var newMovie = new Movie(movie);
 			// update the movie
 			
-			newMovie.save({title: req.query.movie_id},function(err) {
+			Movie.findOneAndUpdate({title: req.query.movie_id},{$set: {title: newMovie.title,
+				year: newMovie.year,genre: newMovie.genre,actor: newMovie.actor}},
+				{returnOriginal:false},function(err) {
 				console.log('saving new shit');
 				if (err) {
 					// duplicate entry
